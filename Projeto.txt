@@ -360,15 +360,34 @@ wr
 
 
 4
-#Mudou se o cost no R4 f0/0 para 15 e como as portas do B1 estavam abertas ele segue pelo B1
-
+R4
+conf t
+int f0/0
+ip ospf cost 15
+end
+wr
 
 5
-#spanning tree R4 f1/1 para 20 (antes 19)
-#spanning tree R2 f1/0 para 20 (antes 19)
-#Mudou se o cost no R4 f0/0 para 15
+R1
+conf t
+int f0/0
+ip ospf cost 15
+end
+wr
 
+R4
+conf t
+int f1/1
+spanning-tree cost 20
+end
+wr
 
+R2
+conf t
+int f1/0
+spanning-tree cost 20
+end
+wr
 --------------------------------------------------------------------------
 
 R4
