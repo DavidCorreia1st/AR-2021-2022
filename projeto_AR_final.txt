@@ -1,0 +1,106 @@
+Endereços
+
+Dns:
+conf t
+int f0/0
+ip address 193.6.94.1 255.255.255.0
+no shut
+exit
+end
+wr
+
+R1:
+conf t
+int f0/0
+ip address 193.6.94.4 255.255.255.0
+no shut
+int f0/1
+ip address 193.6.94.3 255.255.255.0
+no shut
+int f1/0
+ip address 193.6.94.2 255.255.255.0
+no shut
+exit
+end
+wr
+
+R2:
+conf t
+int f0/0
+ip address 193.6.94.6 255.255.255.0
+no shut
+int f0/1
+ip address 193.6.94.5 255.255.255.0
+no shut
+int f1/0
+ip address 8.8.8.1 255.255.255.248
+no shut
+exit
+end
+wr
+
+R3:
+conf t
+int f0/0
+ip address 193.6.94.7 255.255.255.0
+no shut
+int f0/1
+ip address 193.6.94.8 255.255.255.0
+no shut
+int f1/0
+ip address 8.8.8.3 255.255.255.248
+no shut
+exit
+end
+wr
+
+R5:
+conf t
+int f0/0
+ip address 193.6.93.1 255.255.255.0
+no shut
+int f0/1
+ip address 8.8.8.5 255.255.255.248
+no shut
+exit
+end
+wr
+
+R6:
+conf t
+int f0/0
+ip address 193.6.93.2 255.255.255.0
+no shut
+int f0/1
+ip address 8.8.8.9 255.255.255.252
+no shut
+exit
+end
+wr
+
+R6:
+conf t
+int f0/0
+ip address 193.6.93.2 255.255.255.0
+no shut
+int f0/1
+ip address 8.8.8.129 255.255.255.252
+no shut
+exit
+end
+wr
+
+R7:
+conf t
+int f0/0
+ip address 193.6.93.9 255.255.255.0
+no shut
+int f0/1
+ip address 8.8.8.130 255.255.255.252
+no shut
+int f1/0
+exit
+ip address  255.255.255.252
+no shut
+end
+wr

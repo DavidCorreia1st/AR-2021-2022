@@ -1,0 +1,412 @@
+projeto
+
+Vpc1
+ip 193.136.6.1/27 193.136.6.3
+save
+
+Vpc2
+ip 193.136.6.67/27 193.136.6.66
+save
+
+Vpc3
+ip 193.136.6.161/27 193.136.6.162
+save
+
+IPV4
+
+R1
+conf t
+int f0/0
+ip address 193.136.6.3 255.255.255.224
+no shutdown
+int s0/0
+ip address 193.136.6.97 255.255.255.224
+encapsulation ppp
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ip address 193.136.6.34 255.255.255.224
+exit
+end
+wr
+
+R2
+conf t
+int f0/0
+ip address 193.136.6.2 255.255.255.224
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ip address 193.136.6.33 255.255.255.224
+exit
+end
+wr
+
+R3
+conf t
+int f0/0
+ip address 193.136.6.65 255.255.255.224
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ip address 193.136.6.35 255.255.255.224
+exit
+end
+wr
+
+R4
+conf t
+int f0/0
+ip address 193.136.6.66 255.255.255.224
+no shutdown
+int s0/0
+ip address 193.136.6.129 255.255.255.224
+encapsulation ppp
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ip address 193.136.6.36 255.255.255.224
+exit
+end
+wr
+
+R5
+conf t
+int f0/0
+ip address 193.136.6.162 255.255.255.224
+no shutdown
+int s0/1
+ip address 193.136.6.98 255.255.255.224
+encapsulation ppp
+no shutdown
+int s0/2
+ip address 193.136.6.130 255.255.255.224
+encapsulation ppp
+no shutdown
+exit
+end
+wr
+
+B1
+conf t
+no ip routing
+int f1/0
+switchport mode trunk
+interface range f1/1 - 4
+switchport access vlan 1
+exit
+end
+wr
+
+B2
+conf t
+no ip routing
+int f1/0
+switchport mode trunk
+interface range f1/1 - 4
+switchport access vlan 1
+exit
+end
+wr
+
+OSPF---------------------------------------------------
+
+R1
+conf t
+router ospf 1
+router-id 1.1.1.1
+network 193.136.6.0 0.0.0.31 area 0
+network 193.136.6.32 0.0.0.31 area 0
+network 193.136.6.96 0.0.0.31 area 0
+exit
+end
+wr
+
+R2
+conf t
+router ospf 1
+router-id 2.2.2.2
+network 193.136.6.0 0.0.0.31 area 0
+network 193.136.6.32 0.0.0.31 area 0
+exit
+end
+wr
+
+R3
+conf t
+router ospf 1
+router-id 3.3.3.3
+network 193.136.6.32 0.0.0.31 area 0
+network 193.136.6.64 0.0.0.31 area 0
+exit
+end
+wr
+
+R4
+conf t
+router ospf 1
+router-id 4.4.4.4
+network 193.136.6.32 0.0.0.31 area 0
+network 193.136.6.64 0.0.0.31 area 0
+network 193.136.6.128 0.0.0.31 area 0
+exit
+end
+wr
+
+R5
+conf t
+router ospf 1
+router-id 5.5.5.5
+network 193.136.6.96 0.0.0.31 area 0
+network 193.136.6.128 0.0.0.31 area 0
+network 193.136.6.160 0.0.0.31 area 0
+exit
+end
+wr
+
+---------------------------------------------------------------------------------
+IPV6
+
+R1
+conf t
+ipv6 unicast-routing
+int f0/0
+ipv6 address 2001:6:cafe:1::1/64
+no shutdown
+int s0/0
+ipv6 address 2001:6:cafe:4::1/64
+encapsulation ppp
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ipv6 address 2001:6:cafe:2::1/64
+exit
+end
+wr
+
+R2
+conf t
+ipv6 unicast-routing
+int f0/0
+ipv6 address 2001:6:cafe:1::2/64
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ipv6 address 2001:6:cafe:2::2/64
+exit
+end
+wr
+
+
+R3
+conf t
+ipv6 unicast-routing
+int f0/0
+ipv6 address 2001:6:cafe:3::3/64
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ipv6 address 2001:6:cafe:2::3/64
+exit
+end
+wr
+
+R4
+conf t
+ipv6 unicast-routing
+int f0/0
+ipv6 address 2001:6:cafe:3::4/64
+no shutdown
+int s0/0
+ipv6 address 2001:6:cafe:5::4/64
+encapsulation ppp
+no shutdown
+interface range fastethernet 1/0 - 1
+switchport access vlan 1
+exit
+int vlan 1
+ipv6 address 2001:6:cafe:2::4/64
+exit
+end
+wr
+
+
+R5
+conf t
+ipv6 unicast-routing
+int f0/0
+ipv6 address 2001:6:cafe:6::5/64
+no shutdown
+int s0/1
+ipv6 address 2001:6:cafe:4::5/64
+encapsulation ppp
+no shutdown
+int s0/2
+ipv6 address 2001:6:cafe:5::5/64
+encapsulation ppp
+no shutdown
+exit
+end
+wr
+
+ALL VPCs
+ip auto
+
+
+
+RIPng
+
+R1
+conf t
+ipv6 unicast-routing
+ipv6 router rip 1
+no split-horizon
+exit
+int f0/0
+ipv6 rip 1 enable
+exit
+int vlan 1
+ipv6 rip 1 enable
+exit
+int s0/0
+ipv6 rip 1 enable
+exit
+end
+wr
+
+
+R2
+conf t
+ipv6 unicast-routing
+ipv6 router rip 1
+no split-horizon
+exit
+int f0/0
+ipv6 rip 1 enable
+exit
+int vlan 1
+ipv6 rip 1 enable
+exit
+end
+wr
+
+
+R3
+conf t
+ipv6 unicast-routing
+ipv6 router rip 1
+no split-horizon
+exit
+int f0/0
+ipv6 rip 1 enable
+exit
+int vlan 1
+ipv6 rip 1 enable
+exit
+end
+wr
+
+
+R4
+conf t
+ipv6 unicast-routing
+ipv6 router rip 1
+no split-horizon
+exit
+int f0/0
+ipv6 rip 1 enable
+exit
+int vlan 1
+ipv6 rip 1 enable
+exit
+int s0/0
+ipv6 rip 1 enable
+exit
+end
+wr
+
+
+R5
+conf t
+ipv6 unicast-routing
+ipv6 router rip 1
+no split-horizon
+exit
+int f0/0
+ipv6 rip 1 enable
+int s0/1
+ipv6 rip 1 enable
+int s0/2
+ipv6 rip 1 enable
+exit
+end
+wr
+
+----------------------------------------------------------------------------
+
+
+4
+R4
+conf t
+int f0/0
+ip ospf cost 15
+end
+wr
+
+5
+R1
+conf t
+int f0/0
+ip ospf cost 15
+end
+wr
+
+R4
+conf t
+int f1/1
+spanning-tree cost 20
+end
+wr
+
+R2
+conf t
+int f1/0
+spanning-tree cost 20
+end
+wr
+--------------------------------------------------------------------------
+
+R4
+conf t
+ip route 193.136.6.160 255.255.255.224 193.136.6.130
+end
+wr
+
+R5
+conf t
+ip route 193.136.6.0 255.255.255.224 193.136.6.129
+ip route 193.136.6.32 255.255.255.224 193.136.6.129
+ip route 193.136.6.64 255.255.255.224 193.136.6.129
+ip route 193.136.6.96 255.255.255.224 193.136.6.129
+end
+wr
+
+R1
+conf t
+ip route 193.136.6.160 255.255.255.224 193.136.6.36
+end
+wr
