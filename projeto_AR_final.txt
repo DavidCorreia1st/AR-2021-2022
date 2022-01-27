@@ -3,7 +3,7 @@ Endereços
 Dns:
 conf t
 int f0/0
-ip address 193.6.94.1 255.255.255.0
+ip address 193.6.94.1 255.255.255.192
 no shut
 exit
 end
@@ -12,13 +12,13 @@ wr
 R1:
 conf t
 int f0/0
-ip address 193.6.94.4 255.255.255.0
+ip address 193.6.94.129 255.255.255.192
 no shut
 int f0/1
-ip address 193.6.94.3 255.255.255.0
+ip address 193.6.94.65 255.255.255.192
 no shut
 int f1/0
-ip address 193.6.94.2 255.255.255.0
+ip address 193.6.94.2 255.255.255.192
 no shut
 exit
 end
@@ -27,10 +27,10 @@ wr
 R2:
 conf t
 int f0/0
-ip address 193.6.94.6 255.255.255.0
+ip address 193.6.94.193 255.255.255.192
 no shut
 int f0/1
-ip address 193.6.94.5 255.255.255.0
+ip address 193.6.94.66 255.255.255.192
 no shut
 int f1/0
 ip address 8.8.8.1 255.255.255.248
@@ -42,10 +42,10 @@ wr
 R3:
 conf t
 int f0/0
-ip address 193.6.94.7 255.255.255.0
+ip address 193.6.94.130 255.255.255.192
 no shut
 int f0/1
-ip address 193.6.94.8 255.255.255.0
+ip address 193.6.94.194 255.255.255.192
 no shut
 int f1/0
 ip address 8.8.8.3 255.255.255.248
@@ -66,41 +66,161 @@ exit
 end
 wr
 
+
 R6:
 conf t
-int f0/0
+int f0/1
 ip address 193.6.93.2 255.255.255.0
 no shut
-int f0/1
+int f0/0
 ip address 8.8.8.9 255.255.255.252
 no shut
 exit
 end
 wr
 
-R6:
+
+R7:
 conf t
 int f0/0
-ip address 193.6.93.2 255.255.255.0
+ip address 8.8.8.13 255.255.255.252
 no shut
 int f0/1
-ip address 8.8.8.129 255.255.255.252
+ip address 8.8.8.10 255.255.255.252
 no shut
 exit
 end
 wr
 
-R7:
+Periman:
+ip 193.6.93.200/24
+save
+
+Cerf:
+ip 193.6.93.100/24
+save
+
+Pc1:
+ip 193.6.91.1/25
+save
+
+Pc2:
+ip 193.6.91.129/25
+save
+
+Pc3:
+ip 193.6.91.3/25
+save
+
+Pc4:
+ip 193.6.91.4/25
+save
+
+SWR3:
 conf t
 int f0/0
-ip address 193.6.93.9 255.255.255.0
-no shut
-int f0/1
-ip address 8.8.8.130 255.255.255.252
-no shut
-int f1/0
+switchport access vlan 1
 exit
-ip address  255.255.255.252
+int vlan 1
+ip address 10.0.91.1 255.255.255.192
+exit
+int f1/0
+ip address 193.6.91.6 255.255.255.128
 no shut
+int f1/1
+ip address 193.6.91.5 255.255.255.128
+no shut
+int f1/2
+ip address 193.6.91.130 255.255.255.128
+no shut
+exit
 end
 wr
+
+
+SWR4
+conf t
+int f0/0
+switchport access vlan 1
+exit
+int vlan 1
+ip address 10.0.91.2 255.255.255.192
+exit
+int f1/0
+ip address 8.8.8.2 255.255.255.248
+no shut
+int f1/1
+ip address 8.8.8.4 255.255.255.248
+no shut
+int f1/2
+ip address 8.8.8.6 255.255.255.248
+no shut
+exit
+end
+wr
+
+
+SW1:
+conf t
+vlan database
+vlan A
+apply
+vlan database
+vlan B
+apply
+vlan database
+vlan C
+apply
+no ip routing
+int f1/1
+switchport mode trunk
+interface range f1/2 - 5
+switchport access vlan A
+interface range f1/6 - 9
+switchport access vlan B
+interface range f1/10 - 13
+switchport access vlan C
+int vlan A
+ip address ...
+int vlan B
+ip address ...
+int vlan C
+ip address ...
+exit
+end
+wr
+
+SW2:
+conf t
+vlan database
+vlan A
+apply
+vlan database
+vlan B
+apply
+vlan database
+vlan C
+apply
+no ip routing
+int f1/0
+switchport mode trunk
+interface range f1/2 - 5
+switchport access vlan A
+interface range f1/6 - 9
+switchport access vlan B
+interface range f1/10 - 13
+switchport access vlan C
+int vlan A
+ip address ...
+int vlan B
+ip address ...
+int vlan C
+ip address ...
+exit
+end
+wr
+
+
+
+
+______________________________________________________________________________________________________________________________________
