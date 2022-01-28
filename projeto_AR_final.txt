@@ -1,3 +1,5 @@
+PROJETO FINAL
+
 Endereços
 
 Dns:
@@ -82,12 +84,25 @@ wr
 
 R7:
 conf t
+vlan database
+vlan A
+apply
+exit
 int f0/0
+switchport access vlan A
+exit
+int vlan A
 ip address 8.8.8.13 255.255.255.252
 no shut
 int f0/1
 ip address 8.8.8.10 255.255.255.252
 no shut
+int loopback 1
+ip address 193.6.92.1 255.255.255.128
+int loopback 2
+ip address 193.192.92.129 255.255.255.192
+int loopback 3
+ip address 193.192.92.193 255.255.255.192
 exit
 end
 wr
@@ -165,12 +180,11 @@ conf t
 vlan database
 vlan A
 apply
-vlan database
 vlan B
 apply
-vlan database
 vlan C
 apply
+exit
 no ip routing
 int f1/1
 switchport mode trunk
@@ -195,12 +209,11 @@ conf t
 vlan database
 vlan A
 apply
-vlan database
 vlan B
 apply
-vlan database
 vlan C
 apply
+exit
 no ip routing
 int f1/0
 switchport mode trunk
