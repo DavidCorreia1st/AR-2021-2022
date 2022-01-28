@@ -1,4 +1,8 @@
 PROJETO FINAL
+Índice:
+A-10
+B-20
+C-30
 
 Endereços
 
@@ -83,15 +87,15 @@ wr
 
 
 R7:
-conf t
 vlan database
-vlan A
+vlan 10
 apply
 exit
+conf t
 int f0/0
-switchport access vlan A
+switchport access vlan 10
 exit
-int vlan A
+int vlan 1
 ip address 8.8.8.13 255.255.255.252
 no shut
 int f0/1
@@ -116,38 +120,55 @@ ip 193.6.93.100/24
 save
 
 Pc1:
-ip 193.6.91.1/25
+ip 10.0.91.131/26
 save
 
 Pc2:
-ip 193.6.91.129/25
+ip 10.0.91.5/26
 save
 
 Pc3:
-ip 193.6.91.3/25
+ip 10.0.91.3/26
 save
 
 Pc4:
-ip 193.6.91.4/25
+ip 10.0.91.67/26
 save
 
 SWR3:
+vlan database
+vlan 10
+apply
+vlan 20
+apply
+vlan 30
+apply
+exit
 conf t
 int f0/0
 switchport access vlan 1
 exit
 int vlan 1
-ip address 10.0.91.1 255.255.255.192
+ip address 193.6.91.1 255.255.255.192
 exit
 int f1/0
-ip address 193.6.91.6 255.255.255.128
+switchport mode trunk
 no shut
 int f1/1
-ip address 193.6.91.5 255.255.255.128
+switchport mode trunk
 no shut
-int f1/2
-ip address 193.6.91.130 255.255.255.128
-no shut
+interface range f1/2 - 5
+switchport access vlan 10
+interface range f1/6 - 9
+switchport access vlan 20
+interface range f1/10 - 13
+switchport access vlan 30
+int vlan A 
+ip address 10.0.91.4
+int vlan B
+ip address 10.0.91.68
+int vlan C
+ip address 10.0.91.132
 exit
 end
 wr
@@ -159,7 +180,7 @@ int f0/0
 switchport access vlan 1
 exit
 int vlan 1
-ip address 10.0.91.2 255.255.255.192
+ip address 193.6.91.2 255.255.255.192
 exit
 int f1/0
 ip address 8.8.8.2 255.255.255.248
@@ -176,59 +197,63 @@ wr
 
 
 SW1:
-conf t
 vlan database
-vlan A
+vlan 10
 apply
-vlan B
+vlan 20
 apply
-vlan C
+vlan 30
 apply
 exit
+conf t
 no ip routing
+int f1/0
+switchport mode trunk
 int f1/1
 switchport mode trunk
 interface range f1/2 - 5
-switchport access vlan A
+switchport access vlan 10
 interface range f1/6 - 9
-switchport access vlan B
+switchport access vlan 20
 interface range f1/10 - 13
-switchport access vlan C
-int vlan A
-ip address ...
-int vlan B
-ip address ...
-int vlan C
-ip address ...
+switchport access vlan 30
+int vlan 10
+ip address 10.0.91.1
+int vlan 20
+ip address 10.0.91.65
+int vlan 30
+ip address 10.0.91.129
 exit
 end
 wr
 
 SW2:
-conf t
 vlan database
-vlan A
+vlan 10
 apply
-vlan B
+vlan 20
 apply
-vlan C
+vlan 30
 apply
 exit
+conf t
 no ip routing
 int f1/0
 switchport mode trunk
-interface range f1/2 - 5
-switchport access vlan A
+int f1/1
+switchport mode trunk
+interface range f1/3 - 5
+switchport access vlan 10
 interface range f1/6 - 9
-switchport access vlan B
+switchport access vlan 20
 interface range f1/10 - 13
-switchport access vlan C
-int vlan A
-ip address ...
-int vlan B
-ip address ...
-int vlan C
-ip address ...
+switchport access vlan 30
+int vlan 10
+ip address 10.0.91.2
+int vlan 20
+ip address 10.0.91.66
+int vlan 30
+ip address 10.0.91.130
 exit
 end
 wr
