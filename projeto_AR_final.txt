@@ -87,15 +87,8 @@ wr
 
 
 R7:
-vlan database
-vlan 10
-apply
-exit
 conf t
 int f0/0
-switchport access vlan 10
-exit
-int vlan 1
 ip address 8.8.8.13 255.255.255.252
 no shut
 int f0/1
@@ -146,10 +139,8 @@ apply
 exit
 conf t
 int f0/0
-switchport access vlan 1
-exit
-int vlan 1
 ip address 193.6.91.1 255.255.255.192
+no shut
 exit
 int f1/0
 switchport mode trunk
@@ -157,18 +148,22 @@ no shut
 int f1/1
 switchport mode trunk
 no shut
+int vlan 1
+ip address 8.8.8.14 255.255.255.252
+no shut
+exit
 interface range f1/2 - 5
 switchport access vlan 10
 interface range f1/6 - 9
 switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
-int vlan A 
-ip address 10.0.91.4
-int vlan B
-ip address 10.0.91.68
-int vlan C
-ip address 10.0.91.132
+int vlan 10
+ip address 10.0.91.4 255.255.255.192
+int vlan 20
+ip address 10.0.91.68 255.255.255.192
+int vlan 30
+ip address 10.0.91.132 255.255.255.192
 exit
 end
 wr
@@ -177,18 +172,19 @@ wr
 SWR4
 conf t
 int f0/0
-switchport access vlan 1
-exit
-int vlan 1
 ip address 193.6.91.2 255.255.255.192
+no shut
 exit
 int f1/0
+no switchport
 ip address 8.8.8.2 255.255.255.248
 no shut
 int f1/1
+no switchport
 ip address 8.8.8.4 255.255.255.248
 no shut
 int f1/2
+no switchport
 ip address 8.8.8.6 255.255.255.248
 no shut
 exit
@@ -218,11 +214,11 @@ switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
 int vlan 10
-ip address 10.0.91.1
+ip address 10.0.91.1 255.255.255.192
 int vlan 20
-ip address 10.0.91.65
+ip address 10.0.91.65 255.255.255.192
 int vlan 30
-ip address 10.0.91.129
+ip address 10.0.91.129 255.255.255.192
 exit
 end
 wr
@@ -238,10 +234,10 @@ apply
 exit
 conf t
 no ip routing
-int f1/0
+int range f1/0 - 1
 switchport mode trunk
-int f1/1
-switchport mode trunk
+int f1/2
+switchport mode access
 interface range f1/3 - 5
 switchport access vlan 10
 interface range f1/6 - 9
@@ -249,11 +245,11 @@ switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
 int vlan 10
-ip address 10.0.91.2
+ip address 10.0.91.2 255.255.255.192
 int vlan 20
-ip address 10.0.91.66
+ip address 10.0.91.66 255.255.255.192
 int vlan 30
-ip address 10.0.91.130
+ip address 10.0.91.130 255.255.255.192
 exit
 end
 wr
