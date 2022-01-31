@@ -38,8 +38,9 @@ no shut
 int f0/1
 ip address 193.6.94.66 255.255.255.192
 no shut
+exit
 int f1/0
-ip address 8.8.8.1 255.255.255.248
+ip address 8.8.8.2 255.255.255.248
 no shut
 exit
 end
@@ -175,17 +176,11 @@ int f0/0
 ip address 193.6.91.2 255.255.255.192
 no shut
 exit
-int f1/0
-no switchport
-ip address 8.8.8.2 255.255.255.248
-no shut
-int f1/1
-no switchport
+int range f1/0 - 2
+switchport access vlan 1
+exit
+int vlan 1
 ip address 8.8.8.4 255.255.255.248
-no shut
-int f1/2
-no switchport
-ip address 8.8.8.6 255.255.255.248
 no shut
 exit
 end
