@@ -1,0 +1,158 @@
+Sw1 e 2
+
+vlan database
+vlan 2
+apply
+vlan 3
+apply
+vlan 4
+apply
+exit
+conf t
+no ip routing
+int f1/0
+switchport mode trunk
+no shut
+int f1/1
+switchport mode trunk
+no shut
+interface range f1/2 - 5
+switchport access vlan 2
+no shut
+interface range f1/6 - 9
+switchport access vlan 3
+no shut
+interface range f1/10 - 13
+switchport access vlan 4
+no shut
+exit
+end
+
+Sw1
+conf t
+int vlan 2
+ip address 10.0.91.1 255.255.255.192
+int vlan 3
+ip address 10.0.91.65 255.255.255.192
+int vlan 4
+ip address 10.0.91.129 255.255.255.192
+exit
+end
+
+Sw2
+conf t
+int vlan 2
+ip address 10.0.91.2 255.255.255.192
+int vlan 3
+ip address 10.0.91.66 255.255.255.192
+int vlan 4
+ip address 10.0.91.130 255.255.255.192
+exit
+end
+
+
+SWR3
+vlan database
+vlan 2
+apply
+vlan 3
+apply
+vlan 4
+apply
+exit
+conf t
+ip routing
+int f0/0
+ip address 193.6.91.3 255.255.255.0
+no shut
+exit
+int f1/0
+switchport mode trunk
+no shut
+int f1/1
+switchport mode trunk
+no shut
+int vlan 1
+ip address 8.8.8.14 255.255.255.252
+no shut
+exit
+interface range f1/2 - 5
+switchport access vlan 2
+no shut
+interface range f1/6 - 9
+switchport access vlan 3
+no shut
+interface range f1/10 - 13
+switchport access vlan 4
+no shut
+end
+
+
+conf t
+int vlan 2
+ip address 10.0.91.3 255.255.255.192
+int vlan 3
+ip address 10.0.91.67 255.255.255.192
+int vlan 4
+ip address 10.0.91.131 255.255.255.192
+exit
+end
+
+
+conf t
+int vlan 2
+ip helper-address 193.6.91.4
+int vlan 3
+ip helper-address 193.6.91.4
+int vlan 4
+ip helper-address 193.6.91.4
+exit
+end
+
+
+
+SWR4
+conf t
+int f0/0
+ip address 193.6.91.4 255.255.255.0
+no shut
+exit
+int f1/0
+no switchport
+ip address 8.8.8.2 255.255.255.248
+no shut
+int f1/1
+no switchport
+ip address 8.8.8.4 255.255.255.248
+no shut
+int f1/2
+no switchport
+ip address 8.8.8.6 255.255.255.248
+no shut
+exit
+end
+
+conf t
+ip dhcp pool vlan2
+network 10.0.91.0 /26
+default-router 10.0.91.3
+dns-server 194.6.94.1
+exit
+ip dhcp pool vlan3
+network 10.0.91.64 /26
+default-router 10.0.91.67
+dns-server 194.6.94.1
+exit
+ip dhcp pool vlan4
+network 10.0.91.128 /26
+default-router 10.0.91.131
+dns-server 194.6.94.1
+exit
+end
+
+conf t
+ip dhcp pool as91
+network 193.6.91.0 /24
+default-router 193.6.91.4
+dns-server 193.6.94.1
+end
