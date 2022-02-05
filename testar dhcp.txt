@@ -31,22 +31,22 @@ end
 Sw1
 conf t
 int vlan 2
-ip address 10.0.91.1 255.255.255.192
-int vlan 3
 ip address 10.0.91.65 255.255.255.192
-int vlan 4
+int vlan 3
 ip address 10.0.91.129 255.255.255.192
+int vlan 4
+ip address 10.0.91.193 255.255.255.192
 exit
 end
 
 Sw2
 conf t
 int vlan 2
-ip address 10.0.91.2 255.255.255.192
-int vlan 3
 ip address 10.0.91.66 255.255.255.192
-int vlan 4
+int vlan 3
 ip address 10.0.91.130 255.255.255.192
+int vlan 4
+ip address 10.0.91.194 255.255.255.192
 exit
 end
 
@@ -90,11 +90,11 @@ end
 
 conf t
 int vlan 2
-ip address 10.0.91.3 255.255.255.192
-int vlan 3
 ip address 10.0.91.67 255.255.255.192
-int vlan 4
+int vlan 3
 ip address 10.0.91.131 255.255.255.192
+int vlan 4
+ip address 10.0.91.195 255.255.255.192
 exit
 end
 
@@ -134,18 +134,18 @@ end
 
 conf t
 ip dhcp pool vlan2
-network 10.0.91.0 /26
-default-router 10.0.91.3
-dns-server 194.6.94.1
-exit
-ip dhcp pool vlan3
 network 10.0.91.64 /26
 default-router 10.0.91.67
 dns-server 194.6.94.1
 exit
-ip dhcp pool vlan4
+ip dhcp pool vlan3
 network 10.0.91.128 /26
 default-router 10.0.91.131
+dns-server 194.6.94.1
+exit
+ip dhcp pool vlan4
+network 10.0.91.192 /26
+default-router 10.0.91.195
 dns-server 194.6.94.1
 exit
 end

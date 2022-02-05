@@ -139,8 +139,9 @@ vlan 30
 apply
 exit
 conf t
+ip routing
 int f0/0
-ip address 193.6.91.1 255.255.255.192
+ip address 193.6.91.3 255.255.255.0
 no shut
 exit
 int f1/0
@@ -172,8 +173,9 @@ wr
 
 SWR4
 conf t
+ip routing
 int f0/0
-ip address 193.6.91.2 255.255.255.192
+ip address 193.6.91.4 255.255.255.0
 no shut
 exit
 int range f1/0 - 2
@@ -249,7 +251,95 @@ exit
 end
 wr
 
+____________________________________________________________________________________________
 
+Nat_Box
+
+SWR3:
+conf t
+int f0/0
+ip nat outside
+int vlan 1
+ip nat outside
+int vlan 10
+ip nat inside
+int vlan 20
+ip nat inside
+int vlan 30
+ip nat inside
+exit
+
+ip nat pool AS-91 193.6.91.5 193.6.91.63 netmask 255.255.255.192
+access-list 100 permit ip 10.0.91.0 0.0.0.255 any
+ip nat inside source list 100 pool as91-pool overload
+end
+wr
+
+____________________________________________________________________________________________
+
+Ospf_AS_94
+
+Dns_Server:
+conf t
+router ospf 1
+router-id 4.4.4.4
+network 193.6.94.0 0.0.0.63 area 0
+exit
+end
+wr
+
+R1:
+conf t
+router ospf 1
+router-id 1.1.1.1
+network 193.6.94.0 0.0.0.63 area 0
+network 193.6.94.64 0.0.0.63 area 0
+network 193.6.94.128 0.0.0.63 area 0
+exit
+end
+wr
+
+R2:
+conf t
+router ospf 1
+router-id 2.2.2.2
+network 193.6.94.64 0.0.0.63 area 0
+network 193.6.94.192 0.0.0.63 area 0
+exit
+end
+wr
+
+R3:
+conf t
+router ospf 1
+router-id 3.3.3.3
+network 193.6.94.128 0.0.0.63 area 0
+network 193.6.94.192 0.0.0.63 area 0
+exit
+end
+wr
+___________________________________________________________________________________________
+
+RIP_AS_91
+
+SWR3:
+conf t
+router rip
+network 10.0.91.0
+network 193.6.91.0
+exit
+end
+wr
+
+SWR4:
+conf t
+router rip
+network 193.6.91.0
+exit
+end
+wr
+
+____________________________________________________________________________________________
 
 
 ______________________________________________________________________________________________________________________________________
