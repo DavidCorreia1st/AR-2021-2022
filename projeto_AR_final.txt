@@ -361,9 +361,7 @@ conf t
 router bgp 91
 neighbor 8.8.8.13 remote-as 92
 network 193.6.91.0 mask 255.255.255.0
-end
-
-conf t
+exit
 router bgp 91
 neighbor 193.6.91.4 remote-as 91
 neighbor 193.6.91.4 next-hop-self
@@ -374,8 +372,10 @@ conf t
 router bgp 94
 neighbor 8.8.8.4 remote-as 91
 neighbor 8.8.8.5 remote-as 93
-aggregate-address 193.6.94.0 255.255.255.0 summary-only
 redistribute ospf 1
+exit
+router ospf 1
+default-information originate always
 end
 
 R5:
@@ -392,7 +392,6 @@ router bgp 93
 neighbor 8.8.8.10 remote-as 92
 network 193.6.93.0 mask 255.255.255.0
 end
-
 
 
 
