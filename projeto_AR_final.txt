@@ -114,19 +114,19 @@ ip 193.6.93.100/24
 save
 
 Pc1:
-ip 10.0.91.131/26
+ip 10.0.91.132/26 10.0.91.131
 save
 
 Pc2:
-ip 10.0.91.5/26
+ip 10.0.91.5/26 10.0.91.3
 save
 
 Pc3:
-ip 10.0.91.3/26
+ip 10.0.91.4/26 10.0.91.3
 save
 
 Pc4:
-ip 10.0.91.67/26
+ip 10.0.91.68/26 10.0.91.67
 save
 
 SWR3:
@@ -161,11 +161,11 @@ switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
 int vlan 10
-ip address 10.0.91.4 255.255.255.192
+ip address 10.0.91.3 255.255.255.192
 int vlan 20
-ip address 10.0.91.68 255.255.255.192
+ip address 10.0.91.67 255.255.255.192
 int vlan 30
-ip address 10.0.91.132 255.255.255.192
+ip address 10.0.91.131 255.255.255.192
 exit
 end
 wr
@@ -340,6 +340,62 @@ end
 wr
 
 ____________________________________________________________________________________________
+
+BGP:
+
+91-93-94:
+
+SWR4:
+conf t
+router bgp 91
+neighbor 8.8.8.2 remote-as 94
+network 193.6.91.0 mask 255.255.255.0
+exit
+router bgp 91
+neighbor 193.6.91.3 remote-as 91
+neighbor 193.6.91.3 next-hop-self
+end
+
+SWR3:
+conf t
+router bgp 91
+neighbor 8.8.8.13 remote-as 92
+network 193.6.91.0 mask 255.255.255.0
+end
+
+conf t
+router bgp 91
+neighbor 193.6.91.4 remote-as 91
+neighbor 193.6.91.4 next-hop-self
+end
+
+R2:
+conf t
+router bgp 94
+neighbor 8.8.8.4 remote-as 91
+neighbor 8.8.8.5 remote-as 93
+aggregate-address 193.6.94.0 255.255.255.0 summary-only
+redistribute ospf 1
+end
+
+R5:
+conf t
+router bgp 93
+neighbor 8.8.8.4 remote-as 91
+neighbor 8.8.8.2 remote-as 94
+network 193.6.93.0 mask 255.255.255.0 
+end
+
+R6:
+conf t
+router bgp 93
+neighbor 8.8.8.10 remote-as 92
+network 193.6.93.0 mask 255.255.255.0
+end
+
+
+
+
 
 
 ______________________________________________________________________________________________________________________________________
