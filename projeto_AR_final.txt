@@ -106,11 +106,11 @@ end
 wr
 
 Periman:
-ip 193.6.93.200/24
+ip 193.6.93.200/24 193.6.93.1
 save
 
 Cerf:
-ip 193.6.93.100/24
+ip 193.6.93.100/24 193.6.93.1
 save
 
 Pc1:
@@ -210,12 +210,6 @@ interface range f1/6 - 9
 switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
-int vlan 10
-ip address 10.0.91.1 255.255.255.192
-int vlan 20
-ip address 10.0.91.65 255.255.255.192
-int vlan 30
-ip address 10.0.91.129 255.255.255.192
 exit
 end
 wr
@@ -241,12 +235,6 @@ interface range f1/6 - 9
 switchport access vlan 20
 interface range f1/10 - 13
 switchport access vlan 30
-int vlan 10
-ip address 10.0.91.2 255.255.255.192
-int vlan 20
-ip address 10.0.91.66 255.255.255.192
-int vlan 30
-ip address 10.0.91.130 255.255.255.192
 exit
 end
 wr
@@ -269,9 +257,9 @@ int vlan 30
 ip nat inside
 exit
 
-ip nat pool AS-91 193.6.91.5 193.6.91.63 netmask 255.255.255.192
-access-list 100 permit ip 10.0.91.0 0.0.0.255 any
-ip nat inside source list 100 pool as91-pool overload
+no ip nat pool AS-91 193.6.91.5 193.6.91.63 netmask 255.255.255.192
+no access-list 100 permit ip 10.0.91.0 0.0.0.255 any
+no ip nat inside source list 100 pool as91-pool overload
 end
 wr
 
@@ -349,11 +337,13 @@ SWR4:
 conf t
 router bgp 91
 neighbor 8.8.8.2 remote-as 94
+neighbor 8.8.8.5 remote-as 93
 network 193.6.91.0 mask 255.255.255.0
 exit
 router bgp 91
 neighbor 193.6.91.3 remote-as 91
 neighbor 193.6.91.3 next-hop-self
+exit
 end
 
 SWR3:
@@ -365,6 +355,7 @@ exit
 router bgp 91
 neighbor 193.6.91.4 remote-as 91
 neighbor 193.6.91.4 next-hop-self
+exit
 end
 
 R2:
@@ -376,25 +367,220 @@ redistribute ospf 1
 exit
 router ospf 1
 default-information originate always
+exit
 end
 
 R5:
 conf t
+ip route 8.8.8.8 255.255.255.252 193.6.93.2
 router bgp 93
 neighbor 8.8.8.4 remote-as 91
 neighbor 8.8.8.2 remote-as 94
-network 193.6.93.0 mask 255.255.255.0 
+network 193.6.93.0 mask 255.255.255.0
+exit
 end
 
 R6:
 conf t
+ip route 8.8.8.0 255.255.255.248 193.6.93.1
+ip route 193.6.94.0 255.255.255.0 193.6.93.1
+ip route 193.6.91.0 255.255.255.0 193.6.93.1
 router bgp 93
 neighbor 8.8.8.10 remote-as 92
 network 193.6.93.0 mask 255.255.255.0
+exit
 end
 
+R7:
+conf t
+router bgp 92
+neighbor 8.8.8.9 remote-as 93
+neighbor 8.8.8.14 remote-as 91
+network 193.6.92.0 mask 255.255.255.128
+network 193.6.92.128 mask 255.255.255.192
+network 193.6.92.192 mask 255.255.255.192
+exit
+end
+
+___________________________________________________________________________________________________________________________________________
+
+Endereços IPV6:
+
+DNS:
+conf t 
+ipv6 unicast-routing 
+ipv6 router ospf 1 
+router-id 4.4.4.4
+exit 
+int f0/0
+ipv6 address 2001:db8:6:94:1::4/80
+ipv6 ospf 1 area 0
+no shutdown
+exit
+end
+wr
+
+R1:
+conf t 
+ipv6 unicast-routing 
+ipv6 router ospf 1 
+router-id 1.1.1.1
+exit 
+int f0/0
+ipv6 address 2001:db8:6:94:3::1/80
+ipv6 ospf 1 area 0 
+no shutdown 
+int f0/1
+ipv6 address 2001:db8:6:94:2::1/80
+ipv6 ospf 1 area 0
+no shutdown
+int f1/0
+ipv6 address 2001:db8:6:94:1::1/80
+ipv6 ospf 1 area 0 
+no shutdown 
+exit
+end
+wr
+
+R2:
+conf t 
+ipv6 unicast-routing 
+ipv6 router ospf 1 
+router-id 2.2.2.2
+exit 
+int f0/0
+ipv6 address 2001:db8:6:94:4::2/80
+ipv6 ospf 1 area 0 
+no shutdown 
+int f0/1
+ipv6 address 2001:db8:6:94:2::2/80
+ipv6 ospf 1 area 0
+no shutdown
+int f1/0
+ipv6 address 2001:db8:6:5::2/64  
+no shutdown 
+exit
+end
+wr
+
+R3:
+conf t 
+ipv6 unicast-routing 
+ipv6 router ospf 1 
+router-id 3.3.3.3
+exit 
+int f0/0
+ipv6 address 2001:db8:6:94:3::3/80
+ipv6 ospf 1 area 0 
+no shutdown 
+int f0/1
+ipv6 address 2001:db8:6:94:4::3/80
+ipv6 ospf 1 area 0
+no shutdown
+int f1/0
+ipv6 address 2001:db8:6:5::3/64  
+no shutdown 
+exit
+end
+wr
+
+
+SWR4:
+vlan database
+no vlan 2
+apply
+exit
+conf t
+ipv6 unicast-routing
+ipv6 router ospf 1 
+router-id 5.5.5.5
+exit 
+int f0/0
+ipv6 address 2001:db8:6:91:6::4/80
+ipv6 ospf 1 area 0
+no shut
+int vlan 1
+ipv6 address 2001:db8:6:5::4/64
+no shut
+exit
+end
+wr
+
+SWR3:
+conf t
+ipv6 unicast-routing
+ipv6 router ospf 1
+router-id 6.6.6.6
+exit 
+int f0/0
+ipv6 address 2001:db8:6:91:6::3/80
+ipv6 ospf 1 area 0
+no shutdown
+exit
+end
+wr
+
+_____________________________________________________________________
+
+OSPFv3:
+
+R2:
+conf t
+router bgp 94 
+bgp router-id 2.2.2.2 
+bgp default ipv4-unicast
+bgp log-neighbor-changes 
+neighbor 2001:db8:6:5::4 remote-as 91 
+address-family ipv6
+neighbor 2001:db8:6:5::4 activate
+aggregate-address 2001:db8:6:94::/64 summary-only
+redistribute ospf 1
+exit
+ipv6 router ospf 1
+default-information originate always
+end 
+wr
 
 
 
+SWR4:
+conf t
+router bgp 91 
+bgp router-id 4.4.4.4
+bgp default ipv4-unicast
+bgp log-neighbor-changes 
+neighbor 2001:db8:6:91:6::3 remote-as 91
+neighbor 2001:db8:6:5::2 remote-as 94
+address-family ipv6
+neighbor 2001:db8:6:91:6::3 activate 
+neighbor 2001:db8:6:91:6::3 next-hop-self
+neighbor 2001:db8:6:5::2 activate
+aggregate-address 2001:db8:6:91::/64 summary-only
+redistribute ospf 1
+exit
+ipv6 router ospf 1
+default-information originate always
+exit
+end
+wr
 
-______________________________________________________________________________________________________________________________________
+SWR3:
+conf t
+router bgp 91
+bgp router-id 3.3.3.3
+bgp default ipv4-unicast 
+bgp log-neighbor-changes 
+neighbor 2001:db8:6:91:6::4 remote-as 91
+address-family ipv6
+neighbor 2001:db8:6:91:6::4 activate
+neighbor 2001:db8:6:91:6::4 next-hop-self
+aggregate-address 2001:db8:6:91::/64 summary-only
+redistribute ospf 1
+exit
+ipv6 router ospf 1
+default-information originate always
+end 
+wr
+
+
+
