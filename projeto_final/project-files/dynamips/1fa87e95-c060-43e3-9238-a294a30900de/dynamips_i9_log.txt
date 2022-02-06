@@ -1,0 +1,18 @@
+Feb 05 17:51:17.899 HYPERVISOR: Release 0.2.17-x86/Windows (tag 2017072410)
+Feb 05 17:51:17.901 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 60419.
+Feb 05 17:51:18.376 HYPERVISOR: exec_cmd: hypervisor version 
+Feb 05 17:51:18.378 HYPERVISOR: exec_cmd: hypervisor working_dir C:\Users\joaop\Downloads\ARPROJFINAL\AR-2021-2022-main\projeto_final\project-files\dynamips 
+Feb 05 17:51:18.379 GENERAL: working_dir=C:\Users\joaop\Downloads\ARPROJFINAL\AR-2021-2022-main\projeto_final\project-files\dynamips
+Feb 05 17:51:18.379 HYPERVISOR: exec_cmd: nio_bridge create Hub1 
+Feb 05 17:51:23.509 HYPERVISOR: exec_cmd: nio create_udp udp-8df18153-bcb1-497d-a29a-fd28a6d6106b 10043 127.0.0.1 10042 
+Feb 05 17:51:23.509 HYPERVISOR: exec_cmd: nio_bridge add_nio Hub1 udp-8df18153-bcb1-497d-a29a-fd28a6d6106b 
+Feb 05 17:51:23.652 HYPERVISOR: exec_cmd: nio create_udp udp-7568f373-2980-4cb4-b44e-fd61f49039e5 10045 127.0.0.1 10044 
+Feb 05 17:51:23.653 HYPERVISOR: exec_cmd: nio_bridge add_nio Hub1 udp-7568f373-2980-4cb4-b44e-fd61f49039e5 
+Feb 05 17:51:23.857 HYPERVISOR: exec_cmd: nio create_udp udp-ecd07465-d3eb-4691-8a1a-c8e2f04442d0 10047 127.0.0.1 10046 
+Feb 05 17:51:23.857 HYPERVISOR: exec_cmd: nio_bridge add_nio Hub1 udp-ecd07465-d3eb-4691-8a1a-c8e2f04442d0 
+Feb 05 17:51:24.375 HYPERVISOR: exec_cmd: nio create_udp udp-c2ab3b47-5bdb-46a5-8da3-ad58feb846be 10051 127.0.0.1 10050 
+Feb 05 17:51:24.377 HYPERVISOR: exec_cmd: nio_bridge add_nio Hub1 udp-c2ab3b47-5bdb-46a5-8da3-ad58feb846be 
+Feb 05 23:59:38.402 HYPERVISOR: exec_cmd: nio_bridge delete Hub1 
+Feb 05 23:59:38.525 HYPERVISOR: exec_cmd: hypervisor stop 
+Feb 05 23:59:38.879 HYPERVISOR: Stopped.
+Feb 05 23:59:38.880 GENERAL: reset done.
